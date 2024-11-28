@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Accueil{% endblock %}
+
 {% block content %}
 <h1 class="text-2xl font-bold mb-4">Tableau de bord</h1>
-<h3 class="text-xl mb-2">Solde actuel : <span class="font-semibold">{{ balance | round(2) }} €</span></h3>
+<h3 class="text-xl mb-2">Solde actuel : <span class="font-semibold">{{ "{:.2f}".format(balance) }} €</span></h3>
 
 <h2 class="text-xl font-semibold mt-6 mb-2">Revenus</h2>
-<p class="text-lg mb-2">Total des revenus : <span class="font-semibold">{{ total_revenues | round(2) }} €</span></p>
 <table class="min-w-full bg-white">
     <thead>
         <tr>
@@ -19,7 +19,7 @@
         {% for revenue in revenues %}
         <tr class="bg-gray-50">
             <td class="py-2 px-4 border-b">{{ revenue.description }}</td>
-            <td class="py-2 px-4 border-b">{{ revenue.amount | round(2) }} €</td>
+            <td class="py-2 px-4 border-b">{{ "{:.2f}".format(revenue.amount) }} €</td>
             <td class="py-2 px-4 border-b">{{ revenue.date.strftime('%d/%m/%Y') }}</td>
             <td class="py-2 px-4 border-b">
                 <a href="{{ url_for('edit_revenue', id=revenue.id) }}" class="text-blue-600 hover:text-blue-800 mr-2">Modifier</a>
@@ -32,9 +32,9 @@
         {% endfor %}
     </tbody>
 </table>
+<p class="text-lg mt-2">Total des revenus : <span class="font-semibold">{{ "{:.2f}".format(total_revenues) }} €</span></p>
 
 <h2 class="text-xl font-semibold mt-6 mb-2">Charges</h2>
-<p class="text-lg mb-2">Total des charges : <span class="font-semibold">{{ total_charges | round(2) }} €</span></p>
 <table class="min-w-full bg-white">
     <thead>
         <tr>
@@ -48,7 +48,7 @@
         {% for charge in charges %}
         <tr class="bg-gray-50">
             <td class="py-2 px-4 border-b">{{ charge.description }}</td>
-            <td class="py-2 px-4 border-b">{{ charge.amount | round(2) }} €</td>
+            <td class="py-2 px-4 border-b">{{ "{:.2f}".format(charge.amount) }} €</td>
             <td class="py-2 px-4 border-b">{{ charge.date.strftime('%d/%m/%Y') }}</td>
             <td class="py-2 px-4 border-b">
                 <a href="{{ url_for('edit_charge', id=charge.id) }}" class="text-blue-600 hover:text-blue-800 mr-2">Modifier</a>
@@ -61,4 +61,5 @@
         {% endfor %}
     </tbody>
 </table>
+<p class="text-lg mt-2">Total des charges : <span class="font-semibold">{{ "{:.2f}".format(total_charges) }} €</span></p>
 {% endblock %}
