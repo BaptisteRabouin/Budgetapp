@@ -13,7 +13,15 @@ def index():
     total_revenues = sum(revenue.amount for revenue in revenues)
     balance = total_revenues - total_charges
     delete_form = DeleteForm()
-    return render_template('index.html', charges=charges, revenues=revenues, balance=balance, delete_form=delete_form)
+    return render_template(
+        'index.html',
+        charges=charges,
+        revenues=revenues,
+        total_charges=total_charges,
+        total_revenues=total_revenues,
+        balance=balance,
+        delete_form=delete_form
+    )
 
 @app.route('/add_charge', methods=['GET', 'POST'])
 def add_charge():
