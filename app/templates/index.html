@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Accueil{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Tableau de bord</h1>
+<h3 class="text-xl mb-2">Solde actuel : <span class="font-semibold">{{ balance }} €</span></h3>
+
+<h2 class="text-xl font-semibold mt-6 mb-2">Revenus</h2>
+<table class="min-w-full bg-white">
+    <thead>
+        <tr>
+            <th class="py-2 px-4 border-b">Description</th>
+            <th class="py-2 px-4 border-b">Montant</th>
+            <th class="py-2 px-4 border-b">Date</th>
+            <th class="py-2 px-4 border-b">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for revenue in revenues %}
+        <tr class="bg-gray-50">
+            <td class="py-2 px-4 border-b">{{ revenue.description }}</td>
+            <td class="py-2 px-4 border-b">{{ revenue.amount }} €</td>
+            <td class="py-2 px-4 border-b">{{ revenue.date.strftime('%d/%m/%Y') }}</td>
+            <td class="py-2 px-4 border-b">
+                <a href="{{ url_for('edit_revenue', id=revenue.id) }}" class="text-blue-600 hover:text-blue-800 mr-2">Modifier</a>
+                <form action="{{ url_for('delete_revenue', id=revenue.id) }}" method="post" class="inline">
+                    {{ delete_form.hidden_tag() }}
+                    <button type="submit" class="text-red-600 hover:text-red-800">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="text-xl font-semibold mt-6 mb-2">Charges</h2>
+<table class="min-w-full bg-white">
+    <thead>
+        <tr>
+            <th class="py-2 px-4 border-b">Description</th>
+            <th class="py-2 px-4 border-b">Montant</th>
+            <th class="py-2 px-4 border-b">Date</th>
+            <th class="py-2 px-4 border-b">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for charge in charges %}
+        <tr class="bg-gray-50">
+            <td class="py-2 px-4 border-b">{{ charge.description }}</td>
+            <td class="py-2 px-4 border-b">{{ charge.amount }} €</td>
+            <td class="py-2 px-4 border-b">{{ charge.date.strftime('%d/%m/%Y') }}</td>
+            <td class="py-2 px-4 border-b">
+                <a href="{{ url_for('edit_charge', id=charge.id) }}" class="text-blue-600 hover:text-blue-800 mr-2">Modifier</a>
+                <form action="{{ url_for('delete_charge', id=charge.id) }}" method="post" class="inline">
+                    {{ delete_form.hidden_tag() }}
+                    <button type="submit" class="text-red-600 hover:text-red-800">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
