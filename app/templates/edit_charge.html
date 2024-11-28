@@ -8,6 +8,7 @@
         {{ form.description.label(class="block text-gray-700") }}
         {{ form.description(class="w-full mt-1 p-2 border border-gray-300 rounded") }}
     </div>
+    <!-- Les autres champs restent inchangés -->
     <div>
         {{ form.amount.label(class="block text-gray-700") }}
         {{ form.amount(class="w-full mt-1 p-2 border border-gray-300 rounded") }}
@@ -17,7 +18,7 @@
         {{ form.date(class="w-full mt-1 p-2 border border-gray-300 rounded") }}
     </div>
     <div>
-        {{ form.submit(class="px-4 py-2 bg-blue-600 text-white rounded", value="Mettre à jour") }}
+        {{ form.submit(class="px-4 py-2 bg-blue-600 text-white rounded") }}
     </div>
 </form>
 {% endblock %}

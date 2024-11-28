@@ -5,9 +5,11 @@
 <form method="post" class="space-y-4">
     {{ form.hidden_tag() }}
     <div>
+        <!-- Le label affichera maintenant "Nom" -->
         {{ form.description.label(class="block text-gray-700") }}
         {{ form.description(class="w-full mt-1 p-2 border border-gray-300 rounded") }}
     </div>
+    <!-- Les autres champs restent inchangés -->
     <div>
         {{ form.amount.label(class="block text-gray-700") }}
         {{ form.amount(class="w-full mt-1 p-2 border border-gray-300 rounded") }}
