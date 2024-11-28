@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, DateField, SubmitField
+from wtforms import StringField, DecimalField, DateField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 class ChargeForm(FlaskForm):
@@ -16,3 +16,7 @@ class RevenueForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('Supprimer')
+
+class LoginForm(FlaskForm):
+    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    submit = SubmitField('Se connecter')
