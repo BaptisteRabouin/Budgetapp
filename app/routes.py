@@ -23,7 +23,7 @@ def index():
     persons = Person.query.all()
     total_charges = sum(charge.amount for charge in charges)
     total_revenues = sum(revenue.amount for revenue in revenues)
-
+    
     # Calcul du solde
     balance = total_revenues - total_charges
 
@@ -37,6 +37,12 @@ def index():
             (person.allocation_percentage / 100) * allocated_revenue, 2
         )
 
+    # Calcul du montant total couvert par les contributions
+    total_contributions = sum(contributions.values())
+
+    # Calcul du montant restant    compl  ter pour couvrir les charges
+    remaining_to_cover = max(0, total_charges - total_contributions)
+
     delete_form = DeleteForm()
     return render_template(
         'index.html',
@@ -47,8 +53,10 @@ def index():
         balance=balance,
         contributions=contributions,
         delete_form=delete_form,
-        persons=persons
+        persons=persons,
+        remaining_to_cover=remaining_to_cover  # Ajout du montant restant
     )
+
 
 # Route pour ajouter une charge
 @app.route('/add_charge', methods=['GET', 'POST'])

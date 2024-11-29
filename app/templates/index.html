@@ -124,5 +124,15 @@
         {% endfor %}
     </tbody>
 </table>
+<!-- Montant restant à compléter -->
+<p class="text-lg mt-4">
+    Montant restant à compléter pour couvrir les charges :
+    {% if remaining_to_cover > 0 %}
+        <span class="font-semibold text-red-600">{{ "{:.2f}".format(remaining_to_cover) }} €</span>
+    {% else %}
+        <span class="font-semibold text-green-600">Aucun montant restant, tout est couvert !</span>
+    {% endif %}
+</p>
+
 <a href="{{ url_for('manage_allocations') }}" class="text-blue-600 hover:text-blue-800 mt-4 block">Modifier les allocations</a>
 {% endblock %}
