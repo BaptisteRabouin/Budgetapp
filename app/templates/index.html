@@ -91,39 +91,56 @@
 <p class="text-lg mt-2">Total des charges : <span class="font-semibold">{{ "{:.2f}".format(total_charges) }} €</span></p>
 
 <!-- Section des pourcentages et contributions -->
-<!-- Section des pourcentages et contributions -->
 <h2 class="text-xl font-semibold mt-6 mb-2">Répartition des charges par personne</h2>
 <a href="{{ url_for('add_person') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
     Ajouter une Personne
 </a>
 
-<!-- Tableau des contributions -->
 <table class="min-w-full bg-white">
     <thead>
         <tr>
             <th class="py-2 px-4 border-b">Personne</th>
             <th class="py-2 px-4 border-b">Pourcentage Alloué</th>
             <th class="py-2 px-4 border-b">Montant Contribué</th>
+            <th class="py-2 px-4 border-b">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for person in persons %}
         <tr class="bg-gray-50">
             <td class="py-2 px-4 border-b">{{ person.name }}</td>
-            <td class="py-2 px-4 border-b">{{ "{:.2f}".format(person.allocation_percentage) }} %</td>
+            <td class="py-2 px-4 border-b">
+                <form action="{{ url_for('update_allocation', person_id=person.id) }}" method="post">
+                    {{ delete_form.hidden_tag() }}
+                    <input
+                        type="number"
+                        name="allocation_percentage"
+                        value="{{ person.allocation_percentage }}"
+                        class="border border-gray-300 rounded px-2 py-1 w-30 text-center"
+                        min="0"
+                        max="100"
+                    >
+            </td>
             <td class="py-2 px-4 border-b">{{ "{:.2f}".format(contributions[person.name]) }} €</td>
+            <td class="py-2 px-4 border-b">
+                <button type="submit" class="text-blue-600 hover:text-blue-800 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
-        <!-- Revenus non alloués -->
         <tr class="bg-gray-50">
             <td class="py-2 px-4 border-b font-bold">Revenus non alloués</td>
             <td class="py-2 px-4 border-b">-</td>
             <td class="py-2 px-4 border-b">{{ "{:.2f}".format(unallocated_revenues) }} €</td>
+            <td class="py-2 px-4 border-b">-</td>
         </tr>
     </tbody>
 </table>
 
-<!-- Montant restant ou excédent -->
 <div class="mt-4">
     {% if remaining_to_cover < 0 %}
     <p class="text-red-600 font-bold">Montant restant à couvrir : {{ "{:.2f}".format(remaining_to_cover | abs) }} €</p>
@@ -133,6 +150,4 @@
     <p class="text-gray-600 font-bold">Les contributions couvrent exactement les charges.</p>
     {% endif %}
 </div>
-<a href="{{ url_for('manage_allocations') }}" class="text-blue-600 hover:text-blue-800 mt-4 block">Modifier les allocations</a>
-
 {% endblock %}

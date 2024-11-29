@@ -243,3 +243,18 @@ def delete_person(id):
     db.session.commit()
     flash(f"La personne {person.name} a été supprimée avec succès.")
     return redirect(url_for('index'))
+
+
+# Update allocation
+@app.route('/update_allocation/<int:person_id>', methods=['POST'])
+@login_required
+def update_allocation(person_id):
+    person = Person.query.get_or_404(person_id)
+    allocation_percentage = request.form.get('allocation_percentage')
+    try:
+        person.allocation_percentage = float(allocation_percentage)
+        db.session.commit()
+        flash(f"Allocation de {person.name} mise à jour avec succès.")
+    except ValueError:
+        flash("Le pourcentage doit être un nombre valide.", "error")
+    return redirect(url_for('index'))
