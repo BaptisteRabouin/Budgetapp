@@ -15,7 +15,7 @@
 </div>
 
 <!-- Section des revenus -->
-<h2 class="text-xl font-semibold mt-6 mb-2">Revenus</h2>
+<h2 class="text-xl font-semibold mt-6 mb-2 bg-green-100 px-2 py-1 rounded">Revenus</h2>
 <table class="min-w-full bg-white">
     <thead>
         <tr>
@@ -53,7 +53,7 @@
 <p class="text-lg mt-2">Total des revenus : <span class="font-semibold">{{ "{:.2f}".format(total_revenues) }} €</span></p>
 
 <!-- Section des charges -->
-<h2 class="text-xl font-semibold mt-6 mb-2">Charges</h2>
+<h2 class="text-xl font-semibold mt-6 mb-2 bg-red-100 px-2 py-1 rounded">Charges</h2>
 <table class="min-w-full bg-white">
     <thead>
         <tr>
@@ -91,7 +91,7 @@
 <p class="text-lg mt-2">Total des charges : <span class="font-semibold">{{ "{:.2f}".format(total_charges) }} €</span></p>
 
 <!-- Section des pourcentages et contributions -->
-<h2 class="text-xl font-semibold mt-6 mb-2">Répartition des charges par personne</h2>
+<h2 class="text-xl font-semibold mt-6 mb-2 bg-blue-100 px-4 py-2 rounded">Répartition des charges par personne</h2>
 <a href="{{ url_for('add_person') }}" 
    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
     <span class="mr-2">+</span>
@@ -120,7 +120,7 @@
                     <input
                         type="number"
                         name="allocation_percentage"
-                        value="{{ person.allocation_percentage }}"
+                        value="{{ person.allocation_percentage | int }}"
                         class="border border-gray-300 rounded px-2 py-1 w-30 text-center"
                         min="0"
                         max="100"

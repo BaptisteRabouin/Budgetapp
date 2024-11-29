@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, DateField, SubmitField, PasswordField, SelectField
+from wtforms import StringField, DecimalField, DateField, SubmitField, PasswordField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 class ChargeForm(FlaskForm):
@@ -24,7 +24,7 @@ class LoginForm(FlaskForm):
 
 class AllocationForm(FlaskForm):
     person_id = SelectField('Personne', coerce=int, validators=[DataRequired()])  # Sélectionner une personne
-    allocation_percentage = DecimalField('Pourcentage Alloué', validators=[DataRequired(), NumberRange(min=0, max=100)])
+    allocation_percentage = IntegerField('Pourcentage Alloué', validators=[DataRequired(), NumberRange(min=0, max=100)])
     submit = SubmitField('Mettre à jour l\'allocation')
 
 class PersonForm(FlaskForm):
