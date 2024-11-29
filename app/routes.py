@@ -41,7 +41,7 @@ def index():
     total_contributions = sum(contributions.values())
 
     # Calcul du montant restant    compl  ter pour couvrir les charges
-    remaining_to_cover = max(0, total_charges - total_contributions)
+    remaining_to_cover = max(0, total_charges - total_revenues)
 
     delete_form = DeleteForm()
     return render_template(
