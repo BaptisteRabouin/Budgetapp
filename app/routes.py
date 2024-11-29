@@ -60,7 +60,7 @@ def index():
         remaining_to_cover=remaining_to_cover,
         unallocated_revenues=unallocated_revenues,  # Revenus non alloués
         delete_form=delete_form,
-        persons=persons
+        persons=persons,
     )
 
 
