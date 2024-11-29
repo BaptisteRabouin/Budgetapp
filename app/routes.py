@@ -23,7 +23,7 @@ def index():
     persons = Person.query.all()
     total_charges = sum(charge.amount for charge in charges)
     total_revenues = sum(revenue.amount for revenue in revenues)
-    
+
     # Calcul du solde
     balance = total_revenues - total_charges
 
@@ -109,19 +109,20 @@ def delete_charge(id):
 @login_required
 def add_revenue():
     persons = Person.query.all()
-    if not persons:
-        flash("Aucune personne n'est disponible. Veuillez en ajouter avant de créer un revenu.", "error")
-        return redirect(url_for('index'))
 
     form = RevenueForm()
-    form.person_id.choices = [(person.id, person.name) for person in persons]
+    # Ajoute l'option "Aucune" au début de la liste
+    form.person_id.choices = [(0, 'Aucune')] + [(person.id, person.name) for person in persons]
+
     if form.validate_on_submit():
         try:
+            # Si "Aucune" est sélectionné, assigne None à person_id
+            person_id = form.person_id.data if form.person_id.data != 0 else None
             revenue = Revenue(
                 description=form.description.data,
                 amount=form.amount.data,
                 date=form.date.data,
-                person_id=form.person_id.data
+                person_id=person_id
             )
             db.session.add(revenue)
             db.session.commit()

@@ -17,7 +17,6 @@ class Revenue(db.Model):
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.Date, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('persons.id'), nullable=True)  # Lien avec Person
-
     person = db.relationship('Person', back_populates='revenues')  # Relation inverse
 
     def __repr__(self):

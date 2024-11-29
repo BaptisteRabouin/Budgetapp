@@ -12,7 +12,7 @@ class RevenueForm(FlaskForm):
     description = StringField('Nom', validators=[DataRequired(), Length(max=128)])
     amount = DecimalField('Montant', validators=[DataRequired(), NumberRange(min=0)])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
-    person_id = SelectField('Personne', coerce=int)  # Champ pour sélectionner une personne
+    person_id = SelectField('Personne', coerce=int, validators=[])  # Champ pour sélectionner une personne
     submit = SubmitField('Ajouter Revenu')
 
 class DeleteForm(FlaskForm):
