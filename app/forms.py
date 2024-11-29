@@ -24,12 +24,12 @@ class LoginForm(FlaskForm):
 
 class AllocationForm(FlaskForm):
     person_id = SelectField('Personne', coerce=int, validators=[DataRequired()])  # Sélectionner une personne
-    allocation_percentage = DecimalField('Pourcentage Allocé', validators=[DataRequired(), NumberRange(min=0, max=100)])
+    allocation_percentage = DecimalField('Pourcentage Alloué', validators=[DataRequired(), NumberRange(min=0, max=100)])
     submit = SubmitField('Mettre à jour l\'allocation')
 
 class PersonForm(FlaskForm):
     name = StringField('Nom', validators=[DataRequired(), Length(max=64)])
     allocation_percentage = DecimalField(
-        'Pourcentage Allocé', validators=[DataRequired(), NumberRange(min=0, max=100)]
+        'Pourcentage Alloué', validators=[DataRequired(), NumberRange(min=0, max=100)]
     )
     submit = SubmitField('Ajouter')
