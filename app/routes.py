@@ -21,27 +21,31 @@ def index():
     charges = Charge.query.all()
     revenues = Revenue.query.all()
     persons = Person.query.all()
+
     total_charges = sum(charge.amount for charge in charges)
     total_revenues = sum(revenue.amount for revenue in revenues)
 
     # Calcul du solde
     balance = total_revenues - total_charges
 
-    # Calcul des contributions aux charges
+    # Calcul des contributions : salaires avec pourcentage + autres revenus
     contributions = {}
+    total_contributions = 0  # Somme totale des contributions pour les charges
+
     for person in persons:
         allocated_revenue = sum(
             revenue.amount for revenue in revenues if revenue.person_id == person.id
         )
-        contributions[person.name] = round(
-            (person.allocation_percentage / 100) * allocated_revenue, 2
-        )
+        contribution = round((person.allocation_percentage / 100) * allocated_revenue, 2)
+        contributions[person.name] = contribution
+        total_contributions += contribution
 
-    # Calcul du montant total couvert par les contributions
-    total_contributions = sum(contributions.values())
+    # Ajouter tous les revenus non associés à une personne dans les contributions
+    unallocated_revenues = sum(revenue.amount for revenue in revenues if revenue.person_id is None)
+    total_contributions += unallocated_revenues
 
-    # Calcul du montant restant    compl  ter pour couvrir les charges
-    remaining_to_cover = max(0, total_charges - total_revenues)
+    # Calcul du montant restant ou excédent
+    remaining_to_cover = total_contributions - total_charges  # Positif = excédent, Négatif = montant à couvrir
 
     delete_form = DeleteForm()
     return render_template(
@@ -52,9 +56,11 @@ def index():
         total_revenues=total_revenues,
         balance=balance,
         contributions=contributions,
+        total_contributions=total_contributions,
+        remaining_to_cover=remaining_to_cover,
+        unallocated_revenues=unallocated_revenues,  # Revenus non alloués
         delete_form=delete_form,
-        persons=persons,
-        remaining_to_cover=remaining_to_cover  # Ajout du montant restant
+        persons=persons
     )
 
 
