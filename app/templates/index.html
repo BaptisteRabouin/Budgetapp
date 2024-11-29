@@ -92,8 +92,13 @@
 
 <!-- Section des pourcentages et contributions -->
 <h2 class="text-xl font-semibold mt-6 mb-2">Répartition des charges par personne</h2>
-<a href="{{ url_for('add_person') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
-    Ajouter une Personne
+<a href="{{ url_for('add_person') }}" 
+   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+    <span class="mr-2">+</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-3.866 0-7 3.134-7 7h14c0-3.866-3.134-7-7-7z"/>
+    </svg>
 </a>
 
 <table class="min-w-full bg-white">
