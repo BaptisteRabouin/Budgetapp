@@ -4,24 +4,28 @@
 
 {% block content %}
 <h1 class="text-xl font-bold mb-4">Ajouter un Revenu</h1>
-<form method="POST">
+<form method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     {{ form.hidden_tag() }}
     <div class="mb-4">
-        <label for="description" class="block text-sm font-medium text-gray-700">Nom</label>
-        {{ form.description(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Nom</label>
+        {{ form.description(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
     </div>
     <div class="mb-4">
-        <label for="amount" class="block text-sm font-medium text-gray-700">Montant</label>
-        {{ form.amount(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">Montant</label>
+        {{ form.amount(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
     </div>
     <div class="mb-4">
-        <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
-        {{ form.date(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="date">Date</label>
+        {{ form.date(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
     </div>
     <div class="mb-4">
-        <label for="person_id" class="block text-sm font-medium text-gray-700">Personne</label>
-        {{ form.person_id(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="person_id">Personne</label>
+        {{ form.person_id(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
     </div>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ajouter</button>
+    <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Ajouter
+        </button>
+    </div>
 </form>
 {% endblock %}
