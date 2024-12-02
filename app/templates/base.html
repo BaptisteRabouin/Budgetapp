@@ -24,15 +24,20 @@
         </div>
     </nav>
     <div class="container mx-auto px-4 py-6">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+	{% with messages = get_flashed_messages(with_categories=True) %}
+    		{% if messages %}
+        		{% for category, message in messages %}
+            		<div class="px-4 py-3 rounded mb-4 
+               			{% if category == 'success' %}bg-green-100 border border-green-400 text-green-700
+                		{% elif category == 'info' %}bg-yellow-100 border border-yellow-400 text-yellow-700
+                		{% elif category == 'error' %}bg-red-100 border border-red-400 text-red-700
+                		{% endif %}">
+                		{{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
         {% block content %}{% endblock %}
     </div>
 </body>

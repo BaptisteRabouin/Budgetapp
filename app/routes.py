@@ -9,7 +9,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('authenticated'):
-            flash('Veuillez saisir le mot de passe pour accéder à cette page.')
+            flash('Veuillez saisir le mot de passe pour accéder à cette page.', 'error')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -22,7 +22,7 @@ def index():
     active_budget_id = session.get('active_budget_id')
     active_budget = Budget.query.get(active_budget_id)
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant de continuer.")
+        flash("Veuillez sélectionner ou créer un budget avant de continuer.", 'info')
         return redirect(url_for('budgets'))
 
     # Récupère les données liées au budget actif
@@ -80,7 +80,7 @@ def add_charge():
     form = ChargeForm()
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une charge.")
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une charge.", "info")
         return redirect(url_for('budgets'))
 
     if form.validate_on_submit():
@@ -93,7 +93,7 @@ def add_charge():
             )
             db.session.add(charge)
             db.session.commit()
-            flash('Charge ajoutée avec succès.')
+            flash('Charge ajoutée avec succès.', 'success')
             return redirect(url_for('index'))
         except Exception as e:
             db.session.rollback()
@@ -112,7 +112,7 @@ def edit_charge(id):
         charge.amount = form.amount.data
         charge.date = form.date.data
         db.session.commit()
-        flash('Charge mise à jour avec succès.')
+        flash('Charge mise à jour avec succès.', 'success')
         return redirect(url_for('index'))
     return render_template('edit_charge.html', form=form, charge=charge)
 
@@ -125,9 +125,9 @@ def delete_charge(id):
         charge = Charge.query.get_or_404(id)
         db.session.delete(charge)
         db.session.commit()
-        flash('Charge supprimée avec succès.')
+        flash('Charge supprimée avec succès.', 'success')
     else:
-        flash('Requête non valide.')
+        flash('Requête non valide.', 'error')
     return redirect(url_for('index'))
 
 # Route pour ajouter un revenu
@@ -136,7 +136,7 @@ def delete_charge(id):
 def add_revenue():
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.")
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.", 'info')
         return redirect(url_for('budgets'))
 
     # Récupère les personnes liées au budget actif
@@ -158,7 +158,7 @@ def add_revenue():
             )
             db.session.add(revenue)
             db.session.commit()
-            flash('Revenu ajouté avec succès.')
+            flash('Revenu ajouté avec succès.', 'success')
             return redirect(url_for('index'))
         except Exception as e:
             db.session.rollback()
@@ -179,7 +179,7 @@ def edit_revenue(id):
         revenue.date = form.date.data
         revenue.person_id = form.person_id.data
         db.session.commit()
-        flash('Revenu mis à jour avec succès.')
+        flash('Revenu mis à jour avec succès.', 'success')
         return redirect(url_for('index'))
     return render_template('edit_revenue.html', form=form, revenue=revenue)
 
@@ -192,9 +192,9 @@ def delete_revenue(id):
         revenue = Revenue.query.get_or_404(id)
         db.session.delete(revenue)
         db.session.commit()
-        flash('Revenu supprimé avec succès.')
+        flash('Revenu supprimé avec succès.', 'success')
     else:
-        flash('Requête non valide.')
+        flash('Requête non valide.', 'error')
     return redirect(url_for('index'))
 
 # Route pour gérer les allocations
@@ -208,7 +208,7 @@ def manage_allocations():
         if person:
             person.allocation_percentage = form.allocation_percentage.data
             db.session.commit()
-            flash(f"Allocation de {person.name} mise à jour avec succès.")
+            flash(f"Allocation de {person.name} mise à jour avec succès.", 'success')
         return redirect(url_for('index'))
     return render_template('manage_allocations.html', form=form)
 
@@ -219,10 +219,10 @@ def login():
     if form.validate_on_submit():
         if form.password.data == app.config['APP_PASSWORD']:
             session['authenticated'] = True
-            flash('Connexion réussie.')
+            flash('Connexion réussie.', 'success')
             return redirect(url_for('index'))
         else:
-            flash('Mot de passe incorrect.')
+            flash('Mot de passe incorrect.', 'error')
     return render_template('login.html', form=form)
 
 # Route pour la déconnexion
@@ -230,7 +230,7 @@ def login():
 @login_required
 def logout():
     session.pop('authenticated', None)
-    flash('Vous avez été déconnecté.')
+    flash('Vous avez été déconnecté.', 'success')
     return redirect(url_for('login'))
 
 
@@ -240,7 +240,7 @@ def add_person():
     form = PersonForm()
     active_budget_id = session.get('active_budget_id')
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une personne.")
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une personne.", 'error')
         return redirect(url_for('budgets'))
 
     if form.validate_on_submit():
@@ -251,7 +251,7 @@ def add_person():
         )
         db.session.add(person)
         db.session.commit()
-        flash(f"Personne {person.name} ajoutée avec succès.")
+        flash(f"Personne {person.name} ajoutée avec succès.", 'success')
         return redirect(url_for('index'))
     return render_template('add_person.html', form=form)
 
@@ -266,7 +266,7 @@ def delete_person(id):
 
     db.session.delete(person)
     db.session.commit()
-    flash(f"La personne {person.name} a été supprimée avec succès.")
+    flash(f"La personne {person.name} a été supprimée avec succès.", 'success')
     return redirect(url_for('index'))
 
 
@@ -279,7 +279,7 @@ def update_allocation(person_id):
     try:
         person.allocation_percentage = float(allocation_percentage)
         db.session.commit()
-        flash(f"Allocation de {person.name} mise à jour avec succès.")
+        flash(f"Allocation de {person.name} mise à jour avec succès.", 'success')
     except ValueError:
         flash("Le pourcentage doit être un nombre valide.", "error")
     return redirect(url_for('index'))
@@ -294,7 +294,7 @@ def create_budget():
             budget = Budget(name=form.name.data)
             db.session.add(budget)
             db.session.commit()
-            flash(f"Budget '{budget.name}' créé avec succès.")
+            flash(f"Budget '{budget.name}' créé avec succès.", 'success')
             return redirect(url_for('budgets'))  # Redirige vers la liste des budgets
         except Exception as e:
             db.session.rollback()
@@ -348,7 +348,7 @@ def select_budget(budget_id):
     
     # Définit le budget actif dans la session
     session['active_budget_id'] = budget_id
-    flash(f"Le budget '{budget.name}' est maintenant actif.")
+    flash(f"Le budget '{budget.name}' est maintenant actif.", 'info')
     
     # Redirige vers la page d'accueil
     return redirect(url_for('index'))
@@ -365,7 +365,7 @@ def edit_budget(budget_id):
         try:
             budget.name = form.name.data  # Met à jour le nom du budget
             db.session.commit()  # Enregistre les modifications
-            flash(f"Budget '{budget.name}' modifié avec succès.")
+            flash(f"Budget '{budget.name}' modifié avec succès.", 'success')
             return redirect(url_for('budgets'))  # Redirige vers la liste des budgets
         except Exception as e:
             db.session.rollback()  # Annule les changements en cas d'erreur
