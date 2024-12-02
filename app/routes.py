@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, session, current_app as app
 from . import db
-from .models import Charge, Revenue, Person
-from .forms import ChargeForm, RevenueForm, DeleteForm, LoginForm, AllocationForm, PersonForm
+from .models import Charge, Revenue, Person, Budget
+from .forms import ChargeForm, RevenueForm, DeleteForm, LoginForm, AllocationForm, PersonForm, BudgetForm
 from functools import wraps
 
 # Définition du décorateur d'authentification
@@ -18,9 +18,21 @@ def login_required(f):
 @app.route('/')
 @login_required
 def index():
-    charges = Charge.query.all()
-    revenues = Revenue.query.all()
-    persons = Person.query.all()
+     # Récupère le budget actif depuis la session
+    active_budget_id = session.get('active_budget_id')
+    if not active_budget_id:
+        flash("Veuillez sélectionner ou créer un budget avant de continuer.")
+        return redirect(url_for('budgets'))
+
+    charges = Charge.query.filter_by(budget_id=active_budget_id).all()
+    revenues = Revenue.query.filter_by(budget_id=active_budget_id).all()
+    persons = Person.query.filter_by(budget_id=active_budget_id).all()
+
+
+
+#    charges = Charge.query.all()
+#    revenues = Revenue.query.all()
+#    persons = Person.query.all()
 
     total_charges = sum(charge.amount for charge in charges)
     total_revenues = sum(revenue.amount for revenue in revenues)
@@ -69,11 +81,17 @@ def index():
 @login_required
 def add_charge():
     form = ChargeForm()
+    active_budget_id = session.get('active_budget_id')
+    if not active_budget_id:
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une charge.")
+        return redirect(url_for('budgets'))
+
     if form.validate_on_submit():
         charge = Charge(
             description=form.description.data,
             amount=form.amount.data,
-            date=form.date.data
+            date=form.date.data,
+            budget_id=active_budget_id  # Associe au budget actif
         )
         db.session.add(charge)
         db.session.commit()
@@ -114,31 +132,28 @@ def delete_charge(id):
 @app.route('/add_revenue', methods=['GET', 'POST'])
 @login_required
 def add_revenue():
-    persons = Person.query.all()
+    persons = Person.query.filter_by(budget_id=session.get('active_budget_id')).all()
+    active_budget_id = session.get('active_budget_id')
+    if not active_budget_id:
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.")
+        return redirect(url_for('budgets'))
 
     form = RevenueForm()
-    # Ajoute l'option "Aucune" au début de la liste
     form.person_id.choices = [(0, 'Aucune')] + [(person.id, person.name) for person in persons]
 
     if form.validate_on_submit():
-        try:
-            # Si "Aucune" est sélectionné, assigne None à person_id
-            person_id = form.person_id.data if form.person_id.data != 0 else None
-            revenue = Revenue(
-                description=form.description.data,
-                amount=form.amount.data,
-                date=form.date.data,
-                person_id=person_id
-            )
-            db.session.add(revenue)
-            db.session.commit()
-            flash('Revenu ajouté avec succès.')
-            return redirect(url_for('index'))
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout du revenu : {str(e)}", "error")
-    elif form.errors:
-        flash(f"Erreurs dans le formulaire : {form.errors}", "error")
+        person_id = form.person_id.data if form.person_id.data != 0 else None
+        revenue = Revenue(
+            description=form.description.data,
+            amount=form.amount.data,
+            date=form.date.data,
+            person_id=person_id,
+            budget_id=active_budget_id  # Associe au budget actif
+        )
+        db.session.add(revenue)
+        db.session.commit()
+        flash('Revenu ajouté avec succès.')
+        return redirect(url_for('index'))
     return render_template('add_revenue.html', form=form)
 
 # Route pour modifier un revenu
@@ -213,21 +228,21 @@ def logout():
 @login_required
 def add_person():
     form = PersonForm()
+    active_budget_id = session.get('active_budget_id')
+    if not active_budget_id:
+        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une personne.")
+        return redirect(url_for('budgets'))
+
     if form.validate_on_submit():
-        try:
-            person = Person(
-                name=form.name.data,
-                allocation_percentage=form.allocation_percentage.data
-            )
-            db.session.add(person)
-            db.session.commit()
-            flash(f"Personne {person.name} ajoutée avec succès.")
-            return redirect(url_for('index'))
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout de la personne : {str(e)}", "error")
-    elif form.errors:
-        flash(f"Erreurs dans le formulaire : {form.errors}", "error")
+        person = Person(
+            name=form.name.data,
+            allocation_percentage=form.allocation_percentage.data,
+            budget_id=active_budget_id  # Associe au budget actif
+        )
+        db.session.add(person)
+        db.session.commit()
+        flash(f"Personne {person.name} ajoutée avec succès.")
+        return redirect(url_for('index'))
     return render_template('add_person.html', form=form)
 
 
@@ -258,3 +273,84 @@ def update_allocation(person_id):
     except ValueError:
         flash("Le pourcentage doit être un nombre valide.", "error")
     return redirect(url_for('index'))
+
+
+@app.route('/create_budget', methods=['GET', 'POST'])
+@login_required
+def create_budget():
+    form = BudgetForm()
+    if form.validate_on_submit():
+        try:
+            budget = Budget(name=form.name.data)
+            db.session.add(budget)
+            db.session.commit()
+            flash(f"Budget '{budget.name}' créé avec succès.")
+            return redirect(url_for('budgets'))  # Redirige vers la liste des budgets
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erreur lors de la création du budget : {str(e)}", "error")
+    return render_template('create_budget.html', form=form)
+
+
+@app.route('/budgets', methods=['GET'])
+@login_required
+def budgets():
+    budgets = Budget.query.order_by(Budget.created_at.desc()).all()
+    return render_template('budgets.html', budgets=budgets)
+
+
+
+# Route pour afficher un budget spécifique
+@app.route('/view_budget/<int:budget_id>')
+@login_required
+def view_budget(budget_id):
+    budget = Budget.query.get_or_404(budget_id)  # Récupère le budget ou renvoie une 404
+    charges = Charge.query.filter_by(budget_id=budget_id).all()  # Charges liées au budget
+    revenues = Revenue.query.filter_by(budget_id=budget_id).all()  # Revenus liés au budget
+    persons = Person.query.filter_by(budget_id=budget_id).all()  # Personnes liées au budget
+
+    # Calculs
+    total_charges = sum(charge.amount for charge in charges)
+    total_revenues = sum(revenue.amount for revenue in revenues)
+    balance = total_revenues - total_charges
+
+    # Préparer la vue
+    return render_template(
+        'view_budget.html',
+        budget=budget,
+        charges=charges,
+        revenues=revenues,
+        persons=persons,
+        total_charges=total_charges,
+        total_revenues=total_revenues,
+        balance=balance
+    )
+
+# Route pour le budget actif
+@app.route('/select_budget/<int:budget_id>', methods=['GET'])
+@login_required
+def select_budget(budget_id):
+    budget = Budget.query.get_or_404(budget_id)
+    session['active_budget_id'] = budget_id
+    flash(f"Budget sélectionné avec succès.")
+    return redirect(url_for('index'))
+
+
+# Route pour modifier un budget
+@app.route('/edit_budget/<int:budget_id>', methods=['GET', 'POST'])
+@login_required
+def edit_budget(budget_id):
+    budget = Budget.query.get_or_404(budget_id)  # Récupère le budget ou lève une erreur 404
+    form = BudgetForm(obj=budget)  # Pré-remplit le formulaire avec les données du budget
+
+    if form.validate_on_submit():
+        try:
+            budget.name = form.name.data  # Met à jour le nom du budget
+            db.session.commit()  # Enregistre les modifications
+            flash(f"Budget '{budget.name}' modifié avec succès.")
+            return redirect(url_for('budgets'))  # Redirige vers la liste des budgets
+        except Exception as e:
+            db.session.rollback()  # Annule les changements en cas d'erreur
+            flash(f"Erreur lors de la modification du budget : {str(e)}", "error")
+
+    return render_template('edit_budget.html', form=form, budget=budget)

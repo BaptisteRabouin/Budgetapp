@@ -1,4 +1,5 @@
 from . import db
+from datetime import datetime
 
 class Charge(db.Model):
     __tablename__ = 'charges'
@@ -6,6 +7,7 @@ class Charge(db.Model):
     description = db.Column(db.String(128), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.Date, nullable=False)
+    budget_id = db.Column(db.Integer, db.ForeignKey('budgets.id'), nullable=False)
 
     def __repr__(self):
         return f'<Charge {self.description} - {self.amount}>'
@@ -18,6 +20,8 @@ class Revenue(db.Model):
     date = db.Column(db.Date, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('persons.id'), nullable=True)  # Lien avec Person
     person = db.relationship('Person', back_populates='revenues')  # Relation inverse
+    budget_id = db.Column(db.Integer, db.ForeignKey('budgets.id'), nullable=False)
+
 
     def __repr__(self):
         return f'<Revenue {self.description} - {self.amount}>'
@@ -27,8 +31,21 @@ class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     allocation_percentage = db.Column(db.Float, nullable=False, default=50.0)  # Pourcentage alloué par défaut
-
     revenues = db.relationship('Revenue', back_populates='person')  # Relation avec les revenus
+    budget_id = db.Column(db.Integer, db.ForeignKey('budgets.id'), nullable=False)
 
     def __repr__(self):
         return f'<Person {self.name} - {self.allocation_percentage}%>'
+
+class Budget(db.Model):
+    __tablename__ = 'budgets'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    charges = db.relationship('Charge', backref='budget', lazy=True)
+    revenues = db.relationship('Revenue', backref='budget', lazy=True)
+    persons = db.relationship('Person', backref='budget', lazy=True)
+
+    def __repr__(self):
+        return f'<Budget {self.name}>'

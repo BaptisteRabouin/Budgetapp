@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier le Budget{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Modifier le Budget</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Nom du Budget</label>
+        {{ form.name(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+    </div>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Enregistrer</button>
+    <a href="{{ url_for('budgets') }}" class="ml-2 text-gray-600 hover:text-gray-800">Annuler</a>
+</form>
+{% endblock %}

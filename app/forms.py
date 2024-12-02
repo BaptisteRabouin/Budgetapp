@@ -33,3 +33,7 @@ class PersonForm(FlaskForm):
         'Pourcentage Alloué', validators=[DataRequired(), NumberRange(min=0, max=100)]
     )
     submit = SubmitField('Ajouter')
+
+class BudgetForm(FlaskForm):
+    name = StringField('Nom du budget', validators=[DataRequired()])
+    submit = SubmitField('Créer le budget')

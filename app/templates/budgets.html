@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Liste des budgets{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Liste des budgets</h1>
+<table class="min-w-full bg-white">
+    <thead>
+        <tr>
+            <th class="py-2 px-4 border-b">Nom</th>
+            <th class="py-2 px-4 border-b">Créé le</th>
+            <th class="py-2 px-4 border-b">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for budget in budgets %}
+        <tr class="bg-gray-50">
+            <td class="py-2 px-4 border-b">{{ budget.name }}</td>
+            <td class="py-2 px-4 border-b">{{ budget.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td class="py-2 px-4 border-b">
+                <a href="{{ url_for('select_budget', budget_id=budget.id) }}" 
+                   class="text-blue-600 hover:text-blue-800">Voir</a>
+                <a href="{{ url_for('edit_budget', budget_id=budget.id) }}" 
+                   class="text-yellow-600 hover:text-yellow-800 ml-2">Modifier</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('create_budget') }}" 
+   class="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Créer un nouveau budget</a>
+{% endblock %}
