@@ -306,7 +306,8 @@ def create_budget():
 @login_required
 def budgets():
     budgets = Budget.query.order_by(Budget.created_at.desc()).all()
-    return render_template('budgets.html', budgets=budgets)
+    delete_form = DeleteForm()  # Crée une instance de DeleteForm
+    return render_template('budgets.html', budgets=budgets, delete_form=delete_form)
 
 
 
@@ -372,3 +373,25 @@ def edit_budget(budget_id):
             flash(f"Erreur lors de la modification du budget : {str(e)}", "error")
 
     return render_template('edit_budget.html', form=form, budget=budget)
+
+
+# Route pour supprimer un budget
+@app.route('/delete_budget/<int:budget_id>', methods=['POST'])
+@login_required
+def delete_budget(budget_id):
+    budget = Budget.query.get_or_404(budget_id)
+    
+    # Vérifie si le budget est actif avant de le supprimer
+    if session.get('active_budget_id') == budget_id:
+        session.pop('active_budget_id', None)  # Supprime le budget actif de la session
+
+    # Supprime toutes les charges et revenus associés au budget
+    Charge.query.filter_by(budget_id=budget_id).delete()
+    Revenue.query.filter_by(budget_id=budget_id).delete()
+    Person.query.filter_by(budget_id=budget_id).delete()
+
+    # Supprime le budget lui-même
+    db.session.delete(budget)
+    db.session.commit()
+    flash(f"Le budget '{budget.name}' a été supprimé avec succès.", "success")
+    return redirect(url_for('budgets'))
