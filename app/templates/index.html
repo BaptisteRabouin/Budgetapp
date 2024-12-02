@@ -2,6 +2,25 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
+{% if session.get('active_budget_id') %}
+<div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+    <p>
+        <strong>Budget actif :</strong> 
+       {{ active_budget.name if active_budget else "Aucun budget sélectionné" }}
+
+    </p>
+    <a href="{{ url_for('budgets') }}" 
+       class="text-blue-600 hover:text-blue-800 underline">Changer de budget</a>
+</div>
+{% else %}
+<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+    <p>
+        Aucun budget actif. Veuillez <a href="{{ url_for('budgets') }}" 
+        class="text-blue-600 hover:text-blue-800 underline">en sélectionner un</a>.
+    </p>
+</div>
+{% endif %}
+
 <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold">Tableau de bord</h1>
     <h3 class="text-xl">
