@@ -13,31 +13,31 @@
                 <a class="text-xl font-bold text-gray-800" href="{{ url_for('index') }}">BudgetApp</a>
                 <div class="flex space-x-4">
                     {% if session.get('authenticated') %}
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_charge') }}">Ajouter une charge</a>
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_revenue') }}">Ajouter un revenu</a>
-			<a class="text-gray-600 hover:text-gray-800" href="{{ url_for('budgets') }}"> Budgets</a>
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('logout') }}">Déconnexion</a>
+                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('add_charge') }}">Ajouter une charge</a>
+                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('add_revenue') }}">Ajouter un revenu</a>
+                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('budgets') }}">Budgets</a>
+                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('logout') }}">Déconnexion</a>
                     {% else %}
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('login') }}">Connexion</a>
+                        <a class="px-3 py-2 text-gray-600 bg-gray-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('login') }}">Connexion</a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </nav>
     <div class="container mx-auto px-4 py-6">
-	{% with messages = get_flashed_messages(with_categories=True) %}
-    		{% if messages %}
-        		{% for category, message in messages %}
-            		<div class="px-4 py-3 rounded mb-4 
-               			{% if category == 'success' %}bg-green-100 border border-green-400 text-green-700
-                		{% elif category == 'info' %}bg-yellow-100 border border-yellow-400 text-yellow-700
-                		{% elif category == 'error' %}bg-red-100 border border-red-400 text-red-700
-                		{% endif %}">
-                		{{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="px-4 py-3 rounded mb-4 
+                        {% if category == 'success' %}bg-green-100 border border-green-400 text-green-700
+                        {% elif category == 'info' %}bg-yellow-100 border border-yellow-400 text-yellow-700
+                        {% elif category == 'error' %}bg-red-100 border border-red-400 text-red-700
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         {% block content %}{% endblock %}
     </div>
