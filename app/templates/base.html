@@ -13,8 +13,9 @@
                 <a class="text-xl font-bold text-gray-800" href="{{ url_for('index') }}">BudgetApp</a>
                 <div class="flex space-x-4">
                     {% if session.get('authenticated') %}
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_charge') }}">Ajouter Charge</a>
-                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_revenue') }}">Ajouter Revenu</a>
+                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_charge') }}">Ajouter une charge</a>
+                        <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('add_revenue') }}">Ajouter un revenu</a>
+			<a class="text-gray-600 hover:text-gray-800" href="{{ url_for('budgets') }}"> Budgets</a>
                         <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('logout') }}">Déconnexion</a>
                     {% else %}
                         <a class="text-gray-600 hover:text-gray-800" href="{{ url_for('login') }}">Connexion</a>
