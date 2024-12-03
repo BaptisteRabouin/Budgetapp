@@ -398,3 +398,59 @@ def delete_budget(budget_id):
     db.session.commit()
     flash(f"Le budget '{budget.name}' a été supprimé avec succès.", "success")
     return redirect(url_for('budgets'))
+
+
+# Route pour copier un budget
+@app.route('/copy_budget/<int:budget_id>', methods=['POST'])
+@login_required
+def copy_budget(budget_id):
+    original_budget = Budget.query.get_or_404(budget_id)
+
+    try:
+        # Étape 1 : Créer un nouveau budget
+        copied_budget = Budget(name=f"{original_budget.name} (Copie)")
+        db.session.add(copied_budget)
+        db.session.commit()  # Commit pour obtenir l'ID du nouveau budget
+
+        # Dictionnaire pour mapper les personnes copiées
+        person_mapping = {}
+
+        # Étape 2 : Copier les personnes
+        for person in original_budget.persons:
+            new_person = Person(
+                name=person.name,
+                allocation_percentage=person.allocation_percentage,
+                budget_id=copied_budget.id
+            )
+            db.session.add(new_person)
+            db.session.flush()  # Récupère l'ID de la nouvelle personne
+            person_mapping[person.id] = new_person.id  # Map l'ancien ID vers le nouveau
+
+        # Étape 3 : Copier les revenus
+        for revenue in original_budget.revenues:
+            new_revenue = Revenue(
+                description=revenue.description,
+                amount=revenue.amount,
+                date=revenue.date,
+                person_id=person_mapping.get(revenue.person_id),  # Map vers la nouvelle personne
+                budget_id=copied_budget.id
+            )
+            db.session.add(new_revenue)
+
+        # Étape 4 : Copier les charges
+        for charge in original_budget.charges:
+            new_charge = Charge(
+                description=charge.description,
+                amount=charge.amount,
+                date=charge.date,
+                budget_id=copied_budget.id
+            )
+            db.session.add(new_charge)
+
+        db.session.commit()
+        flash(f"Le budget '{original_budget.name}' a été copié avec succès.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Erreur lors de la copie du budget : {str(e)}", "error")
+
+    return redirect(url_for('budgets'))
