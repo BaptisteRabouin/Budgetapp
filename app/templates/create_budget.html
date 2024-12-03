@@ -1,15 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Créer un budget{% endblock %}
+{% block title %}Créer un nouveau Budget{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">Créer un nouveau budget</h1>
-<form method="POST">
+<h1 class="text-xl font-bold mb-4">Créer un nouveau Budget</h1>
+<form method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     {{ form.hidden_tag() }}
     <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700">Nom du budget</label>
-        {{ form.name(class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm") }}
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nom du Budget</label>
+        {{ form.name(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        {% if form.name.errors %}
+        <p class="text-red-500 text-xs italic mt-2">{{ form.name.errors[0] }}</p>
+        {% endif %}
     </div>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Créer</button>
+    <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Créer
+        </button>
+        <a href="{{ url_for('budgets') }}" class="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Annuler
+        </a>
+    </div>
 </form>
 {% endblock %}
