@@ -38,6 +38,7 @@ def index():
 
     # Calcul des contributions : salaires avec pourcentage + autres revenus
     contributions = {}
+    remains = {}  # Nouveau dictionnaire pour stocker le reste de salaire
     total_contributions = 0  # Somme totale des contributions pour les charges
 
     for person in persons:
@@ -46,6 +47,7 @@ def index():
         )
         contribution = round((person.allocation_percentage / 100) * allocated_revenue, 2)
         contributions[person.name] = contribution
+        remains[person.name] = round(allocated_revenue - contribution, 2)  # Calcul du reste
         total_contributions += contribution
 
     # Ajouter tous les revenus non associés à une personne dans les contributions
@@ -65,6 +67,7 @@ def index():
         total_revenues=total_revenues,
         balance=balance,
         contributions=contributions,
+        remains=remains,  # Passe les restes de salaire au template
         total_contributions=total_contributions,
         remaining_to_cover=remaining_to_cover,
         unallocated_revenues=unallocated_revenues,  # Revenus non alloués
