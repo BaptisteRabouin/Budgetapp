@@ -7,17 +7,17 @@
 <table class="min-w-full bg-white">
     <thead>
         <tr>
-            <th class="py-2 px-4 border-b">Nom</th>
-            <th class="py-2 px-4 border-b">Créé le</th>
-            <th class="py-2 px-4 border-b">Actions</th>
+            <th class="py-2 px-4 border-b text-center">Nom</th>
+            <th class="py-2 px-4 border-b text-center">Créé le</th>
+            <th class="py-2 px-4 border-b text-center">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for budget in budgets %}
         <tr class="bg-gray-50">
-            <td class="py-2 px-4 border-b">{{ budget.name }}</td>
-            <td class="py-2 px-4 border-b">{{ budget.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
-            <td class="py-2 px-4 border-b flex space-x-4">
+            <td class="py-2 px-4 border-b text-center">{{ budget.name }}</td>
+            <td class="py-2 px-4 border-b text-center">{{ budget.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td class="py-2 px-4 border-b text-center flex justify-center space-x-4">
                 <!-- Sélectionner -->
                 <a href="{{ url_for('select_budget', budget_id=budget.id) }}"
                    class="text-green-600 hover:text-green-800 focus:outline-none"
@@ -27,7 +27,7 @@
                     </svg>
                 </a>
                 {% if session.get('active_budget_id') == budget.id %}
-            <!--    <span class="text-green-500 font-bold ml-2">(Sélectionné)</span> -->
+                <span class="text-green-500 font-bold"></span>
                 {% endif %}
 
                 <!-- Modifier -->
