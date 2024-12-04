@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, session, current_app as app
 from . import db
 from .models import Charge, Revenue, Person, Budget
-from .forms import ChargeForm, RevenueForm, DeleteForm, LoginForm, AllocationForm, PersonForm, BudgetForm
+from .forms import ChargeForm, RevenueForm, DeleteForm, LoginForm, AllocationForm, PersonForm, BudgetForm, ChangePasswordForm
 from functools import wraps
 
 # Définition du décorateur d'authentification
@@ -459,3 +459,23 @@ def copy_budget(budget_id):
         flash(f"Erreur lors de la copie du budget : {str(e)}", "error")
 
     return redirect(url_for('budgets'))
+
+
+
+# Route pour changer le mot de passe
+@app.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        # Vérification de l'ancien mot de passe
+        if form.old_password.data != app.config['APP_PASSWORD']:
+            flash("L'ancien mot de passe est incorrect.", "error")
+            return redirect(url_for('change_password'))
+
+        # Mettre à jour le mot de passe dans la configuration
+        app.config['APP_PASSWORD'] = form.new_password.data
+        flash("Le mot de passe a été modifié avec succès.", "success")
+        return redirect(url_for('index'))
+
+    return render_template('change_password.html', form=form)

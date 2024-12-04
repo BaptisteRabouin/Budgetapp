@@ -7,22 +7,38 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a class="text-xl font-bold text-gray-800" href="{{ url_for('index') }}">Budget</a>
-                <div class="flex space-x-4">
-                    {% if session.get('authenticated') %}
-			<a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('index') }}">Accueil</a>
-                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('budgets') }}">Budgets</a>
-                        <a class="px-3 py-2 text-white-600 bg-white-200 rounded hover:bg-red-600 hover:text-white transition duration-300" href="{{ url_for('logout') }}">Déconnexion</a>
-                    {% else %}
-                        <a class="px-3 py-2 text-gray-600 bg-gray-200 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('login') }}">Connexion</a>
-                    {% endif %}
-                </div>
+
+<nav class="bg-white shadow">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <a class="text-xl font-bold text-gray-800" href="{{ url_for('index') }}">Budget</a>
+            <div class="flex space-x-4 items-center">
+                {% if session.get('authenticated') %}
+                    <a class="px-3 py-2 text-gray-600 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('index') }}">Accueil</a>
+                    <a class="px-3 py-2 text-gray-600 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('budgets') }}">Budgets</a>
+
+                    <!-- Menu déroulant -->
+                    <div class="relative">
+                        <!-- Bouton principal -->
+                        <a href="{{ url_for('logout') }}" 
+                           class="px-3 py-2 text-gray-600 rounded hover:bg-red-600 hover:text-white transition duration-300">
+                            Déconnexion
+                        </a>
+                        <!-- Menu déroulant -->
+                        <div class="absolute hidden mt-2 right-0 w-48 bg-white shadow-md rounded border border-gray-200 z-10 group-hover:block">
+                            <a href="{{ url_for('change_password') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Modifier le mot de passe
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a class="px-3 py-2 text-gray-600 rounded hover:bg-blue-600 hover:text-white transition duration-300" href="{{ url_for('login') }}">Connexion</a>
+                {% endif %}
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
     <div class="container mx-auto px-4 py-6">
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -40,5 +56,30 @@
 
         {% block content %}{% endblock %}
     </div>
+<script>
+    const dropdownButton = document.getElementById("dropdownButton");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    dropdownButton.addEventListener("click", () => {
+        dropdownMenu.classList.toggle("hidden"); // Affiche ou masque le menu déroulant
+    });
+
+    // Ferme le menu si on clique ailleurs
+    document.addEventListener("click", (event) => {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add("hidden");
+        }
+    });
+</script>
+
+
 </body>
+
+<style>
+/* Rendre visible le menu déroulant au survol */
+nav .relative:hover .absolute {
+    display: block;
+}
+</style>
+
 </html>
