@@ -22,6 +22,11 @@ class Revenue(db.Model):
     person = db.relationship('Person', back_populates='revenues')  # Relation inverse
     budget_id = db.Column(db.Integer, db.ForeignKey('budgets.id'), nullable=False)
 
+    def is_consistent(self):
+        """Vérifie si le budget de la personne correspond au budget du revenu."""
+        if self.person_id and self.person.budget_id != self.budget_id:
+            return False
+        return True
 
     def __repr__(self):
         return f'<Revenue {self.description} - {self.amount}>'
@@ -37,6 +42,13 @@ class Person(db.Model):
     def __repr__(self):
         return f'<Person {self.name} - {self.allocation_percentage}%>'
 
+
+    def can_be_deleted(self):
+        """Retourne True si la personne n'a pas de revenus associés."""
+        return len(self.revenues) == 0
+
+
+
 class Budget(db.Model):
     __tablename__ = 'budgets'
     id = db.Column(db.Integer, primary_key=True)
@@ -49,3 +61,12 @@ class Budget(db.Model):
 
     def __repr__(self):
         return f'<Budget {self.name}>'
+
+    
+    def get_persons(self):
+        """Récupère toutes les personnes associées à ce budget."""
+        return Person.query.filter_by(budget_id=self.id).all()
+
+    def get_revenues(self):
+        """Récupère tous les revenus associés à ce budget."""
+        return Revenue.query.filter_by(budget_id=self.id).all()

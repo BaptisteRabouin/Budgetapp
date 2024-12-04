@@ -263,19 +263,19 @@ def add_person():
         return redirect(url_for('index'))
     return render_template('add_person.html', form=form)
 
-
-@app.route('/delete_person/<int:id>', methods=['POST'])
+# SUpprimer une personne
+@app.route('/delete_person/<int:person_id>', methods=['POST'])
 @login_required
-def delete_person(id):
-    person = Person.query.get_or_404(id)
-    if person.revenues:  # Vérifie si des revenus sont associés à cette personne
+def delete_person(person_id):
+    person = Person.query.get_or_404(person_id)
+    if not person.can_be_deleted():
         flash(f"La personne {person.name} ne peut pas être supprimée car elle a des revenus associés.", "error")
-        return redirect(url_for('index'))
+        return redirect(url_for('manage_persons'))
 
     db.session.delete(person)
     db.session.commit()
     flash(f"La personne {person.name} a été supprimée avec succès.", 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('manage_persons'))
 
 
 # Update allocation
@@ -315,7 +315,17 @@ def create_budget():
 def budgets():
     budgets = Budget.query.order_by(Budget.created_at.desc()).all()
     delete_form = DeleteForm()  # Crée une instance de DeleteForm
-    return render_template('budgets.html', budgets=budgets, delete_form=delete_form)
+
+     # Récupère le budget actif depuis la session
+    active_budget_id = session.get('active_budget_id')
+    active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
+
+    return render_template(
+    	'budgets.html',
+	budgets=budgets,
+	delete_form=delete_form,
+	active_budget=active_budget
+    )
 
 
 
@@ -479,3 +489,18 @@ def change_password():
         return redirect(url_for('index'))
 
     return render_template('change_password.html', form=form)
+
+
+# Route pour gérer les personnes
+@app.route('/manage_persons', methods=['GET'])
+@login_required
+def manage_persons():
+    active_budget_id = session.get('active_budget_id')
+    if not active_budget_id:
+        flash("Veuillez sélectionner ou créer un budget avant de gérer les personnes.", "info")
+        return redirect(url_for('budgets'))
+
+    # Récupère les personnes liées au budget actif
+    persons = Person.query.filter_by(budget_id=active_budget_id).all()
+    delete_form = DeleteForm()  # Crée une instance de formulaire de suppression
+    return render_template('manage_persons.html', persons=persons, delete_form=delete_form)
