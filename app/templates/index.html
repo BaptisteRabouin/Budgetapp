@@ -3,15 +3,16 @@
 
 {% block content %}
 {% if session.get('active_budget_id') %}
-<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4"style="max-width: 300px;">
-    <p>
-        <strong>Budget actif :</strong> 
-       {{ active_budget.name if active_budget else "Aucun budget sélectionné" }}
-
-    </p>
-    <a href="{{ url_for('budgets') }}" 
-       class="text-yellow-600 hover:text-yellow-800 underline">Changer de budget</a>
+<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded inline-flex items-center mb-4">
+    <span>
+        <strong>Budget actif :</strong>
+        {{ active_budget.name if active_budget else "Aucun budget sélectionné" }}
+    </span>
+    <a href="{{ url_for('budgets') }}" class="text-yellow-600 hover:text-yellow-800 underline ml-2">
+        Changer de budget
+    </a>
 </div>
+
 {% else %}
 <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
     <p>
@@ -85,7 +86,7 @@
 <div class="bg-red-100 px-4 py-3 rounded flex items-center justify-between mb-4">
     <h2 class="text-xl font-semibold">Charges</h2>
     <a href="{{ url_for('add_charge') }}" 
-       class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" title="Ajouter une charge">
+       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" title="Ajouter une charge">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                   d="M12 4v16m8-8H4" />
@@ -134,7 +135,7 @@
 <div class="bg-blue-100 px-4 py-3 rounded flex items-center justify-between mb-4">
     <h2 class="text-xl font-semibold">Répartition des charges en fonction des revenus</h2>
     <a href="{{ url_for('add_person') }}" 
-       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"title="Ajouter une personne"">
+       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"title="Ajouter une personne"">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                   d="M12 4v16m8-8H4" />
