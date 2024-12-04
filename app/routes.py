@@ -28,7 +28,12 @@ def index():
     # Récupère les données liées au budget actif
     charges = Charge.query.filter_by(budget_id=active_budget_id).all()
     revenues = Revenue.query.filter_by(budget_id=active_budget_id).all()
-    persons = Person.query.filter_by(budget_id=active_budget_id).all()
+
+    # Filtrer les personnes ayant au moins un revenu associé
+    persons = [
+        person for person in Person.query.filter_by(budget_id=active_budget_id).all()
+        if any(revenue.person_id == person.id for revenue in revenues)
+    ]
 
     total_charges = sum(charge.amount for charge in charges)
     total_revenues = sum(revenue.amount for revenue in revenues)
