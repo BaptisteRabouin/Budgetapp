@@ -111,14 +111,6 @@
 
 <!-- Section des pourcentages et contributions -->
 <h2 class="text-xl font-semibold mt-6 mb-2 bg-blue-100 px-4 py-2 rounded">Répartition des charges en fonction des revenus</h2>
-<a href="{{ url_for('add_person') }}" 
-   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-    <span class="mr-2">+</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-3.866 0-7 3.134-7 7h14c0-3.866-3.134-7-7-7z"/>
-    </svg>
-</a>
 
 <table class="min-w-full bg-white">
     <thead>
@@ -168,10 +160,22 @@
     </tbody>
 </table>
 
+
 <!-- Total des contributions -->
-<p class="text-lg mt-2 text-right">
-    Total des contributions : <span class="font-bold">{{ "{:.2f}".format(total_contributions) }} €</span>
-</p>
+<div class="flex justify-between items-center mt-4">
+    <!-- Bouton d'ajout de personne -->
+    <a href="{{ url_for('add_person') }}"
+       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+        <span class="mr-2">+</span>
+        Ajouter une personne
+    </a>
+
+    <!-- Texte du total des contributions -->
+    <p class="text-lg">
+        Total des contributions : <span class="font-bold">{{ "{:.2f}".format(total_contributions) }} €</span>
+    </p>
+</div>
+
 <div class="mt-4">
     {% if remaining_to_cover < 0 %}
     <p class="text-red-600 font-bold text-right">Montant restant à couvrir : {{ "{:.2f}".format(remaining_to_cover | abs) }} €</p>
@@ -181,4 +185,5 @@
     <p class="text-gray-600 font-bold text-right">Les contributions couvrent exactement les charges.</p>
     {% endif %}
 </div>
+
 {% endblock %}
