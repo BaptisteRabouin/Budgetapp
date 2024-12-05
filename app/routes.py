@@ -22,7 +22,7 @@ def index():
     active_budget_id = session.get('active_budget_id')
     active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant de continuer.", 'info')
+        flash("Veuillez créer puis seléctionner  un budget avant de continuer.", 'info')
         return redirect(url_for('budgets'))
 
     # Récupère les données liées au budget actif
@@ -94,7 +94,7 @@ def add_charge():
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une charge.", "info")
+        flash("Veuillez créer puis sélectionner  un budget avant d'ajouter une charge.", "info")
         return redirect(url_for('budgets'))
 
     if form.validate_on_submit():
@@ -156,7 +156,7 @@ def add_revenue():
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.", 'info')
+        flash("Veuillez créer puis sélectionner  un budget avant d'ajouter un revenu.", 'info')
         return redirect(url_for('budgets'))
 
     # Récupère les personnes liées au budget actif
@@ -260,7 +260,7 @@ def add_person():
     form = PersonForm()
     active_budget_id = session.get('active_budget_id')
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant d'ajouter une personne.", 'error')
+        flash("Veuillez créer puis sélectionner un budget avant d'ajouter une personne.", 'error')
         return redirect(url_for('budgets'))
 
     if form.validate_on_submit():
@@ -510,7 +510,7 @@ def manage_persons():
     active_budget_id = session.get('active_budget_id')
     active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
-        flash("Veuillez sélectionner ou créer un budget avant de gérer les personnes.", "info")
+        flash("Veuillez créer puis sélectionner un budget avant de gérer les personnes.", "info")
         return redirect(url_for('budgets'))
 
     # Récupère les personnes liées au budget actif
