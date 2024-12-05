@@ -4,6 +4,25 @@
 
 {% block content %}
 
+<!-- Affichage du budget actif -->
+{% if session.get('active_budget_id') %}
+<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded inline-flex items-center mb-4">
+    <span>
+        Budget actif :
+       <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
+    </span>
+</div>
+
+{% else %}
+<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+    <p>
+        Aucun budget actif. Veuillez <a href="{{ url_for('budgets') }}"
+        class="text-blue-600 hover:text-blue-800 underline">en sélectionner un</a>.
+    </p>
+</div>
+{% endif %}
+
+
 <h1 class="text-xl font-bold mb-4">Gestion des personnes</h1>
 <table class="min-w-full bg-white">
     <thead>

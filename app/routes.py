@@ -496,6 +496,7 @@ def change_password():
 @login_required
 def manage_persons():
     active_budget_id = session.get('active_budget_id')
+    active_budget = Budget.query.get(active_budget_id)  # Récupère le budget actif
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant de gérer les personnes.", "info")
         return redirect(url_for('budgets'))
@@ -503,4 +504,4 @@ def manage_persons():
     # Récupère les personnes liées au budget actif
     persons = Person.query.filter_by(budget_id=active_budget_id).all()
     delete_form = DeleteForm()  # Crée une instance de formulaire de suppression
-    return render_template('manage_persons.html', persons=persons, delete_form=delete_form)
+    return render_template('manage_persons.html', persons=persons, active_budget=active_budget, delete_form=delete_form)
