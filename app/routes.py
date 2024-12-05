@@ -367,7 +367,7 @@ def select_budget(budget_id):
     
     # Définit le budget actif dans la session
     session['active_budget_id'] = budget_id
-    flash(f"Le budget '{budget.name}' est maintenant actif.", 'info')
+    #flash(f"Le budget '{budget.name}' est maintenant actif.", 'info')
     
     # Redirige vers la page d'accueil
     return redirect(url_for('index'))
