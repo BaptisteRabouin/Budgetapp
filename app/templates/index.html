@@ -5,12 +5,10 @@
 {% if session.get('active_budget_id') %}
 <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded inline-flex items-center mb-4">
     <span>
-        <strong>Budget actif :</strong>
-        {{ active_budget.name if active_budget else "Aucun budget sélectionné" }}
+        Budget actif :
+       <strong> {{ active_budget.name if active_budget else "Aucun budget sélectionné" }} </strong>
     </span>
-    <a href="{{ url_for('budgets') }}" class="text-yellow-800 hover:text-yellow-600 border ml-2 font-bold">
-       -   Changer de budget ?
-    </a>
+    <a href="{{ url_for('budgets') }}" class="text-yellow-700 hover:text-yellow-500">&nbsp;-&nbsp;Changer de budget ?</a>
 </div>
 
 {% else %}
