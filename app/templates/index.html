@@ -10,14 +10,6 @@
     </span>
     <a href="{{ url_for('budgets') }}" class="text-yellow-700 hover:text-yellow-500">&nbsp;-&nbsp;Changer de budget ?</a>
 </div>
-
-{% else %}
-<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-    <p>
-        Aucun budget actif. Veuillez <a href="{{ url_for('budgets') }}" 
-        class="text-blue-600 hover:text-blue-800 underline">en sélectionner un</a>.
-    </p>
-</div>
 {% endif %}
 
 <div class="flex justify-between items-center mb-4">

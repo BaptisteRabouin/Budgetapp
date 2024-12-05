@@ -11,14 +11,6 @@
        <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
     </span>
 </div>
-
-{% else %}
-<div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-    <p>
-        Aucun budget actif. Veuillez en créer un ou <a href="{{ url_for('budgets') }}" 
-        class="text-yellow-800">en sélectionner un en ciquant sur la coche verte</a>.
-    </p>
-</div>
 {% endif %}
 
 
