@@ -20,7 +20,7 @@ def login_required(f):
 def index():
     # Récupère le budget actif depuis la session
     active_budget_id = session.get('active_budget_id')
-    active_budget = Budget.query.get(active_budget_id)
+    active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant de continuer.", 'info')
         return redirect(url_for('budgets'))
@@ -92,6 +92,7 @@ def add_charge():
 
     form = ChargeForm()
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
+    active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant d'ajouter une charge.", "info")
         return redirect(url_for('budgets'))
@@ -153,6 +154,7 @@ def add_revenue():
         return redirect(url_for('create_budget'))
 
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
+    active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.", 'info')
         return redirect(url_for('budgets'))
@@ -506,7 +508,7 @@ def change_password():
 @login_required
 def manage_persons():
     active_budget_id = session.get('active_budget_id')
-    active_budget = Budget.query.get(active_budget_id)  # Récupère le budget actif
+    active_budget = Budget.query.get(active_budget_id) if active_budget_id else None
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant de gérer les personnes.", "info")
         return redirect(url_for('budgets'))
