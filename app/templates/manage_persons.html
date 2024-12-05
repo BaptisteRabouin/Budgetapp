@@ -8,7 +8,7 @@
 <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded inline-flex items-center mb-4">
     <span>
         Budget actif :
-       <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
+        <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
     </span>
 </div>
 
@@ -20,7 +20,6 @@
     </p>
 </div>
 {% endif %}
-
 
 <h1 class="text-xl font-bold mb-4">Gestion des personnes</h1>
 <table class="min-w-full bg-white">
@@ -37,21 +36,25 @@
             <td class="py-2 px-4 border-b text-center">{{ person.name }}</td>
             <td class="py-2 px-4 border-b text-center">{{ person.allocation_percentage }}%</td>
             <td class="py-2 px-4 border-b text-center">
-		<form action="{{ url_for('delete_person', person_id=person.id) }}" method="POST" class="inline">
-    			{{ delete_form.hidden_tag() }}
-			<button type="submit" class="text-red-600 hover:text-red-800 focus:outline-none"
+                <form action="{{ url_for('delete_person', person_id=person.id) }}" method="POST" class="inline">
+                    {{ delete_form.hidden_tag() }}
+                    <button type="submit" class="text-red-600 hover:text-red-800 focus:outline-none"
                             title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
-
-		</form>
-
-
+                </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<!-- Bouton Ajouter une personne -->
+<a href="{{ url_for('add_person') }}" 
+   class="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+    Ajouter une personne
+</a>
+
 {% endblock %}
