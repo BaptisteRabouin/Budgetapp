@@ -1,0 +1,24 @@
+# Exclure les fichiers et répertoires liés à Git
+.git
+.gitignore
+
+# Exclure les fichiers de cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# Exclure les environnements virtuels
+venv/
+
+# Exclure les bases de données locales
+data/*
+*.db
+# Exclure les fichiers sensibles ou spécifiques à la machine
+*.env
+.DS_Store
+# Exclure les fichiers et répertoires inutiles
+*.log
+migrations/
+
+# Exclure les scripts locaux qui ne sont pas nécessaires dans l'image
+push.sh
