@@ -85,6 +85,11 @@ def index():
 @app.route('/add_charge', methods=['GET', 'POST'])
 @login_required
 def add_charge():
+    # Vérifie s'il existe au moins un budget dans la base
+    if Budget.query.count() == 0:
+        flash("Aucun budget n'a été créé. Veuillez créer un budget avant d'ajouter une charge.", "info")
+        return redirect(url_for('create_budget'))
+
     form = ChargeForm()
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     if not active_budget_id:
@@ -142,6 +147,11 @@ def delete_charge(id):
 @app.route('/add_revenue', methods=['GET', 'POST'])
 @login_required
 def add_revenue():
+    # Vérifie s'il existe au moins un budget dans la base
+    if Budget.query.count() == 0:
+        flash("Aucun budget n'a été créé. Veuillez créer un budget avant d'ajouter un revenu.", "info")
+        return redirect(url_for('create_budget'))
+
     active_budget_id = session.get('active_budget_id')  # Récupère l'ID du budget actif
     if not active_budget_id:
         flash("Veuillez sélectionner ou créer un budget avant d'ajouter un revenu.", 'info')
