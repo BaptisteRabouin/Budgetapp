@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+k{% extends "base.html" %}
 
 {% block title %}Liste des budgets{% endblock %}
 
@@ -8,12 +8,10 @@
 <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded inline-flex items-center mb-4">
     <span>
         Budget actif :
-       <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
+        <strong>{{ active_budget.name if active_budget else "Aucun budget sélectionné" }}</strong>
     </span>
 </div>
 {% endif %}
-
-
 
 <h1 class="text-xl font-bold mb-4">Liste des budgets</h1>
 <table class="min-w-full bg-white">
@@ -24,31 +22,32 @@
             <th class="py-2 px-4 border-b text-center">Actions</th>
         </tr>
     </thead>
-    <tbody>
-        {% for budget in budgets %}
-        <tr class="bg-gray-50">
-            <td class="py-2 px-4 border-b text-center">{{ budget.name }}</td>
-            <td class="py-2 px-4 border-b text-center">{{ budget.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
-            <td class="py-2 px-4 border-b text-center flex justify-center space-x-4">
-                <!-- Sélectionner -->
-                <a href="{{ url_for('select_budget', budget_id=budget.id) }}"
-                   class="text-green-600 hover:text-green-800 focus:outline-none"
-                   title="Sélectionner">
-		<svg class="h-5 w-5 text-green-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="4" y="4" width="16" height="16" rx="2" />  
-			<path d="M9 12l2 2l4 -4" />
-		</svg>
-                </a>
+<tbody>
+    {% for budget in budgets %}
+    <tr class="bg-gray-50">
+        <td class="py-2 px-4 border-b text-center">
+            <a href="{{ url_for('select_budget', budget_id=budget.id) }}" 
+               class="inline-block px-4 py-2 rounded 
+                      {% if active_budget and active_budget.id == budget.id %}
+                      bg-green-500 text-white
+                      {% else %}
+                      bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-black
+                      {% endif %}">
+                {{ budget.name }}
+            </a>
+        </td>
+        <td class="py-2 px-4 border-b text-center">{{ budget.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td class="py-2 px-4 border-b text-center flex justify-center space-x-4">
+            <!-- Modifier -->
+            <a href="{{ url_for('edit_budget', budget_id=budget.id) }}"
+               class="text-blue-600 hover:text-blue-800 focus:outline-none"
+               title="Modifier">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+            </a>
 
-                <!-- Modifier -->
-                <a href="{{ url_for('edit_budget', budget_id=budget.id) }}"
-                   class="text-blue-600 hover:text-blue-800 focus:outline-none"
-                   title="Modifier">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-                    </svg>
-                </a>
-
-		 <!-- Copier -->
+	 <!-- Copier -->
    		 <form action="{{ url_for('copy_budget', budget_id=budget.id) }}" method="post" class="inline">
        		 {{ delete_form.hidden_tag() }}
        		 <button type="submit" class="text-yellow-600 hover:text-yellow-600 focus:outline-none" title="Copier">
@@ -57,23 +56,26 @@
 		</svg>
        		 </button>
    		 </form>
-                <!-- Supprimer -->
-                <form action="{{ url_for('delete_budget', budget_id=budget.id) }}" method="post" class="inline">
-                    {{ delete_form.hidden_tag() }}
-                    <button type="submit" class="text-red-600 hover:text-red-800 focus:outline-none"
-                            title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                    </button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+
+            <!-- Supprimer -->
+            <form action="{{ url_for('delete_budget', budget_id=budget.id) }}" method="post" class="inline">
+                {{ delete_form.hidden_tag() }}
+                <button type="submit" class="text-red-600 hover:text-red-800 focus:outline-none"
+                        title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
 </table>
 <a href="{{ url_for('create_budget') }}"
    class="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
     Créer un nouveau budget
 </a>
 {% endblock %}
+

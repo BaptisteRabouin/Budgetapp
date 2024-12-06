@@ -1,0 +1,16 @@
+services:
+  app:
+    image: budgetapp:latest
+    container_name: budgetapp
+    ports:
+      - "5000:5000"
+    volumes:
+      - /data:/app/data
+#    environment:
+      # Ajoutez vos variables d'environnement ici si nécessaire
+      # - DATABASE_URL=sqlite:///app/data/database.db
+    restart: unless-stopped
+
+volumes:
+  app_data:
+    driver: local

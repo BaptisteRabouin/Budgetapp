@@ -11,7 +11,7 @@ __pycache__/
 venv/
 
 # Exclure les bases de données locales
-data/*
+data/
 *.db
 # Exclure les fichiers sensibles ou spécifiques à la machine
 *.env
