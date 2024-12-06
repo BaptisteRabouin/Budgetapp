@@ -9,7 +9,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('authenticated'):
-            flash('Veuillez saisir le mot de passe pour accéder à cette page.', 'error')
+           # flash('Veuillez saisir le mot de passe pour accéder à cette page.', 'error')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
