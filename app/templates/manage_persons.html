@@ -26,7 +26,22 @@
         {% for person in persons %}
         <tr class="bg-gray-50">
             <td class="py-2 px-4 border-b text-center">{{ person.name }}</td>
-            <td class="py-2 px-4 border-b text-center">{{ person.allocation_percentage }}%</td>
+            <td class="py-2 px-4 border-b text-center">
+                <form action="{{ url_for('update_allocation', person_id=person.id) }}" method="POST" class="inline">
+                    {{ delete_form.hidden_tag() }}
+                    <input 
+                        type="number" 
+                        name="allocation_percentage" 
+                        value="{{ person.allocation_percentage }}" 
+                        class="border border-gray-300 rounded px-2 py-1 text-center w-20"
+                        min="0" max="100">
+                    <button type="submit" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" title="Enregistrer">
+		<svg class="h 5 w-5 text-green-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  
+			<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />  <polyline points="17 21 17 13 7 13 7 21" />  <polyline points="7 3 7 8 15 8" />
+		</svg>
+                    </button>
+                </form>
+            </td>
             <td class="py-2 px-4 border-b text-center">
                 <form action="{{ url_for('delete_person', person_id=person.id) }}" method="POST" class="inline">
                     {{ delete_form.hidden_tag() }}
