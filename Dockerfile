@@ -32,7 +32,7 @@ USER appuser
 COPY . /app
 
 # Étape 6 : Exposer le port pour l'application
-EXPOSE 5000
+EXPOSE 80
 
 # Étape 7 : Commande pour lancer le script init_db.py au démarrage
 CMD ["sh", "-c", "python init_db.py && gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app"]
