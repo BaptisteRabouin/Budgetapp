@@ -38,7 +38,7 @@ Une image Docker est prête à être utilisée pour faciliter le déploiement.
 
 1. **Clonez le projet** :
     ```bash
-    git clone https://github.com/votre-utilisateur/BudgetApp.git
+    git clone https://gitlab.com/Nollor/BudgetApp.git
     cd BudgetApp
     ```
 
