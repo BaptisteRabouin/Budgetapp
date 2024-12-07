@@ -80,7 +80,7 @@ Pour un déploiement en production, l'application peut être exécutée à l'aid
 
 2. **Exécutez le conteneur** :
     ```bash
-    docker run -d -p 5000:5000 --name budgetapp-container -v /votre/chemin/local/data:/app/data budgetapp
+    docker run -d -p 80:80 --name budgetapp-container -v /votre/chemin/local/data:/app/data budgetapp
     ```
 
 ---
@@ -96,3 +96,4 @@ Pour un déploiement en production, l'application peut être exécutée à l'aid
 ## Auteurs ✍️
 
 - [Nollor](https://gitlab.com/Nollor)
+

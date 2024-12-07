@@ -1,7 +1,7 @@
 services:
   app:
     image: budgetapp:latest
-    container_name: budgetapp:1.0
+    container_name: budgetapp
     ports:
       - "80:80"
     volumes:
