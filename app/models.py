@@ -35,7 +35,7 @@ class Person(db.Model):
     __tablename__ = 'persons'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    allocation_percentage = db.Column(db.Float, nullable=False, default=50.0)  # Pourcentage alloué par défaut
+    allocation_percentage = db.Column(db.Integer, nullable=False, default=50)  # Pourcentage alloué par défaut
     revenues = db.relationship('Revenue', back_populates='person')  # Relation avec les revenus
     budget_id = db.Column(db.Integer, db.ForeignKey('budgets.id'), nullable=False)
 
