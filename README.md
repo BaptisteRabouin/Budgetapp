@@ -31,7 +31,7 @@ Une image Docker est prête à être utilisée pour faciliter le déploiement.
 
 2. **Accédez à l'application** :  
     Ouvrez un navigateur et accédez à `http://localhost:80` ou `http://<IP>:80`.
-    Le mot de passe par défaut est : password
+    Le mot de passe par défaut est : **password**  
     Vous pouvez le changer facilement en cliquant sur "Modifier le mot de passe" sous le bouton déconnexion. 
 ---
 
