@@ -14,8 +14,10 @@ before_script:
 build:
   stage: build
   script:
-    - docker info
+#    - docker info
     - docker build -t docker.io/nollor/budgetapp:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/nollor/budgetapp:$CI_COMMIT_SHORT_SHA
+    - docker tag $IMAGE_NAME:$CI_COMMIT_SHORT_SHA $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:latest
   only:
     - main
