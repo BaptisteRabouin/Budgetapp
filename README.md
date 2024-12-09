@@ -1,6 +1,6 @@
-# BudgetApp 🧾💰
+# Budget 🧾💰
 
-**BudgetApp** est une application web simple et efficace pour gérer vos budgets personnels ou familiaux. Avec une interface intuitive et des fonctionnalités adaptées, elle permet de suivre vos revenus, charges et répartitions budgétaires en toute simplicité.
+**Budget** est une application web simple et efficace pour gérer vos budgets personnels ou familiaux. Avec une interface intuitive et des fonctionnalités adaptées, elle permet de suivre vos revenus, charges et répartitions budgétaires en toute simplicité.
 
 L'application a été conçue avec une IA car je ne suis pas développeur de formation mais j'avais un réel besoin de pouvoir gérer facilement le budget familial
 
