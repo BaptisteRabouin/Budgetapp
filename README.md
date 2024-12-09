@@ -94,7 +94,7 @@ Pour un déploiement en production, l'application peut être exécutée à l'aid
 ### Page de gestion des personnes
 ![Interface gestion personnes](https://via.placeholder.com/800x400)
 
-## Auteurs ✍️
+## Auteur ✍️
 
 - [Nollor](https://gitlab.com/Nollor)
 
