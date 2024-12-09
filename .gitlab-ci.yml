@@ -16,6 +16,7 @@ build_image:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
   script:
+    - unset DOCKER_HOST
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
