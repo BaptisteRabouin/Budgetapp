@@ -24,3 +24,5 @@ build_image:
   tags:
     - docker
   privileged: true
+
+# update 1
