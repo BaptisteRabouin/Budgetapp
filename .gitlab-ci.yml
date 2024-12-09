@@ -3,8 +3,9 @@ stages:
 
 variables:
   IMAGE_NAME: docker.io/nollor/budgetapp
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_DRIVER: overlay2
 
 build_image:
   stage: build
@@ -19,10 +20,5 @@ build_image:
     - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
   only:
     - main
-  # Important : nécessite que le runner soit en mode privilégié
-  # Vérifie que ton runner est configuré pour supporter le docker:dind
-#  tags:
-#    - docker
-#  privileged: true
-
-# update 1
+  tags:
+    - docker
