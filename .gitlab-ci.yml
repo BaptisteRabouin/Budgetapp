@@ -11,7 +11,8 @@ build_image:
   stage: build
   image: docker:20.10.16
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:dind
+      command: ["--tls=false", "--host=tcp://0.0.0.0:2375", "--dns=8.8.8.8"]
       alias: docker
   script:
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
