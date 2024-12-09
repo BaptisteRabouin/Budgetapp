@@ -13,7 +13,7 @@ build_image:
     - docker:dind
 #      command: ["--tls=false", "dns=1.1.1.1"]
   variables:
-    DOCKER_HOST: tcp://docker:2375
+#    DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
   script:
     - unset DOCKER_HOST
