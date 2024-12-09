@@ -1,24 +1,22 @@
 stages:
   - build
-  - push
-  - deploy
 
 variables:
-  IMAGE_NAME: docker.io/nollor/budgetapp
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
 
 build_image:
   stage: build
-  image: docker:dind
+  image: docker:latest
   services:
-    - docker:dind
-#      command: ["--tls=false", "dns=1.1.1.1"]
-  variables:
-#    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false", "--host=tcp://0.0.0.0:2375"]
   script:
-    - unset DOCKER_HOST
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
-    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - docker info
+    - docker build -t nollor/budgetapp:$CI_COMMIT_SHORT_SHA .
+    - docker push nollor/budgetapp:$CI_COMMIT_SHORT_SHA
   only:
     - main
