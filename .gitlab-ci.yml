@@ -21,8 +21,8 @@ build_image:
     - main
   # Important : nécessite que le runner soit en mode privilégié
   # Vérifie que ton runner est configuré pour supporter le docker:dind
-  tags:
-    - docker
-  privileged: true
+#  tags:
+#    - docker
+#  privileged: true
 
 # update 1
