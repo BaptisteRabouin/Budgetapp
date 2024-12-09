@@ -15,7 +15,7 @@
             <a class="text-xl font-bold text-gray-800" href="{{ url_for('index') }}">Budget</a>
             <div class="flex space-x-4 items-center">
                 {% if session.get('authenticated') %}
-                    <a class="px-3 py-2 text-gray-600 rounded hover:bg-green-600 hover:text-white transition duration-300" href="{{ url_for('index') }}">Accueil</a>
+                    <a class="px-3 py-2 text-gray-600 rounded hover:bg-green-600 hover:text-white transition duration-300" href="{{ url_for('index') }}">Dashboard</a>
                     <a class="px-3 py-2 text-gray-600 rounded hover:bg-green-600 hover:text-white transition duration-300" href="{{ url_for('budgets') }}">Budgets</a>
 		    <a class="px-3 py-2 text-gray-600 bg-white-200 rounded hover:bg-green-600 hover:text-white transition duration-300"href="{{ url_for('manage_persons') }}">Personnes</a>
 
